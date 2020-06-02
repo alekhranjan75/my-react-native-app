@@ -1,30 +1,29 @@
 import React, {Component} from 'react';
-import { DISHES } from '../shared/dishes';
 import Menu from './Menu';
 import DishDetails from './Dish/DishDetails';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
+import {createStackNavigator} from 'react-navigation-stack'
+import Constants from 'expo-constants';
+import { createAppContainer } from 'react-navigation';
+
+const MenuNavigator = createStackNavigator({
+    Menu: {screen : Menu},
+    DishDetails: {screen: DishDetails}
+}, {
+    initialRouteName: 'Menu'
+})
+
+const Navigator = createAppContainer(MenuNavigator)
 
 class Main extends Component {
-    state = {
-        dishes: DISHES,
-        selectedDish: null
-    }
-
-    onSelectDish = (dishId) => {
-        this.setState ({
-            selectedDish: dishId
-        })
-    }
+    
     render() {
+        
         return (
-            <View >
-                <Menu 
-                    dishes = {this.state.dishes} 
-                    onPress = {(dishId) => this.onSelectDish(dishId)}/>
-                <DishDetails dish = {this.state.dishes.filter(dish => dish.id === this.state.selectedDish)[0]} />
+            <View style={{flex:1, paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight }}>
+                <Navigator />
             </View>
         )
     }
 }
-
 export default Main;
