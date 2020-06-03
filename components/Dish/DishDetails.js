@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
-import { Card } from 'react-native-elements';
-import { Text, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { DISHES } from '../../shared/dishes';
+import { COMMENTS } from '../../shared/comments';
+import RenderDish from './RenderDish';
+import RenderDishComment from './RenderDishComment';
 
 class DishDetails extends Component {
     state = {
-        dishes: DISHES
+        dishes: DISHES,
+        comments: COMMENTS,
+        favorites: []
     }
 
     static navigationOptions = {
@@ -17,28 +21,27 @@ class DishDetails extends Component {
             color: 'black'
         }
     }
+
+    markFavorite = (dishId) => {
+        this.setState({
+            favorites: this.state.favorites.concat(dishId)
+        })
+        console.log(this.state.favorites)
+    }
     render() {
 
         const dishId = this.props.navigation.getParam('dishId', '');
+        // console.log(dishId)
         const dish = this.state.dishes[+dishId]
-
-        let details = null
+        const comments  = this.state.comments.filter(comment => comment.dishId == dishId)
+        console.log("Comments", comments)
+        const fav = this.state.favorites.some(el => el == dishId)
         
-        if (dish != null) {
-            details = 
-                <Card
-                    featuredTitle = {dish.name}
-                    image = {require('../../assets/images/uthappizza.png')}
-                    >
-                        <Text style = {{margin : 10}}>
-                            {dish.description}
-                        </Text>
-                </Card>
-        }
         return (
-            <View>
-                {details}
-            </View>
+            <ScrollView>
+                <RenderDish fav = {fav} dish = {dish} markFavorite = {() => this.markFavorite(dishId)}/>
+                <RenderDishComment comments = {comments} />
+            </ScrollView>
         )
     }  
 }
