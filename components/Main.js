@@ -7,6 +7,8 @@ import Constants from 'expo-constants';
 import { createAppContainer } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Home from './Home';
+import About from './About'
+import Contact from './Contact'
 
 const MenuNavigator = createStackNavigator({
     Menu: {screen : Menu},
@@ -19,8 +21,18 @@ const HomeNavigator = createStackNavigator({
     Home: {screen: Home}
 }, {})
 
+const AboutNavigator = createStackNavigator({
+    About: {screen: About}  
+})
+const ContactNavigator = createStackNavigator({
+    Contact: {screen: Contact}  
+})
+
 const NavigatorMenu = createAppContainer(MenuNavigator)
 const NavigatorHome = createAppContainer(HomeNavigator)
+const NavigatorAbout = createAppContainer(AboutNavigator)
+const NavigatorContact = createAppContainer(ContactNavigator)
+
 
 const MainNavigator = createDrawerNavigator({
     Home: {
@@ -37,6 +49,21 @@ const MainNavigator = createDrawerNavigator({
             drawerLabel: 'Menu'
         }
     },
+    About: {
+        screen: NavigatorAbout,
+        navigationOptions: {
+            title: 'About us',
+            drawerLabel: 'About us'
+        }
+    },
+    Contact: {
+        screen: NavigatorContact,
+        navigationOptions: {
+            title: 'Contact us',
+            drawerLabel: 'Contact us'
+        }
+    },
+
 },{
     drawerBackgroundColor: 'white'
 })
